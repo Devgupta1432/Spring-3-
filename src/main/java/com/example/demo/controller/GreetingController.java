@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.GreetingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -7,6 +9,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/greeting")
 public class GreetingController {
+
+    private final GreetingService greetingService;
+
+    @Autowired
+    public GreetingController(GreetingService greetingService) {
+        this.greetingService = greetingService;
+    }
 
     // curl -X GET "http://localhost:8080/greeting/?name=John"
     @GetMapping("/")
@@ -32,5 +41,11 @@ public class GreetingController {
     @DeleteMapping("/")
     public String deleteGreeting(@RequestParam(name = "id") int id) {
         return "Greeting with ID " + id + " has been deleted.";
+    }
+
+    // New method using GreetingService
+    @GetMapping("/simple")
+    public String getSimpleGreeting() {
+        return greetingService.getSimpleGreeting();
     }
 }
