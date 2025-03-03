@@ -1,20 +1,29 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Greeting;
+import com.example.demo.repository.GreetingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class GreetingService {
 
-    public String getGreeting(String firstName, String lastName) {
-        if (firstName != null && !firstName.isEmpty() && lastName != null && !lastName.isEmpty()) {
-            return "Hello, " + firstName + " " + lastName + "!";
-        } else if (firstName != null && !firstName.isEmpty()) {
-            return "Hello, " + firstName + "!";
-        } else if (lastName != null && !lastName.isEmpty()) {
-            return "Hello, " + lastName + "!";
-        } else {
-            return "Hello, World!";
-        }
+    private final GreetingRepository greetingRepository;
+
+    @Autowired
+    public GreetingService(GreetingRepository greetingRepository) {
+        this.greetingRepository = greetingRepository;
+    }
+
+    public Greeting saveGreeting(String message) {
+        Greeting greeting = new Greeting(message);
+        return greetingRepository.save(greeting);
+    }
+
+    public List<Greeting> getAllGreetings() {
+        return greetingRepository.findAll();
     }
 
     public String getSimpleGreeting() {
