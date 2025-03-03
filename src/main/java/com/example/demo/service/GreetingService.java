@@ -1,11 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Greeting;
 import com.example.demo.repository.GreetingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class GreetingService {
@@ -17,13 +14,10 @@ public class GreetingService {
         this.greetingRepository = greetingRepository;
     }
 
-    // Update an existing greeting by ID
-    public Greeting updateGreeting(Long id, String newMessage) {
-        Optional<Greeting> optionalGreeting = greetingRepository.findById(id);
-        if (optionalGreeting.isPresent()) {
-            Greeting greeting = optionalGreeting.get();
-            greeting.setMessage(newMessage);
-            return greetingRepository.save(greeting);
+    // Delete a greeting by ID
+    public void deleteGreeting(Long id) {
+        if (greetingRepository.existsById(id)) {
+            greetingRepository.deleteById(id);
         } else {
             throw new RuntimeException("Greeting with ID " + id + " not found.");
         }
