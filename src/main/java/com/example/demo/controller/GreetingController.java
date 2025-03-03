@@ -5,8 +5,7 @@ import com.example.demo.service.GreetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/greeting")
@@ -19,23 +18,10 @@ public class GreetingController {
         this.greetingService = greetingService;
     }
 
-    // GET request to fetch all greetings from the database
-    @GetMapping
-    public List<Greeting> getAllGreetings() {
-        return greetingService.getAllGreetings();
-    }
-
-    // POST request to save a new greeting
-    // curl -X POST http://localhost:8080/greeting -H "Content-Type: application/json" -d '{"message": "Hello, Spring!"}'
-    @PostMapping
-    public Greeting postGreeting(@RequestBody Map<String, String> request) {
-        String message = request.get("message");
-        return greetingService.saveGreeting(message);
-    }
-
-    // Simple greeting
-    @GetMapping("/simple")
-    public String getSimpleGreeting() {
-        return greetingService.getSimpleGreeting();
+    // GET request to fetch a greeting by ID
+    // Example: curl -X GET http://localhost:8080/greeting/1
+    @GetMapping("/{id}")
+    public Optional<Greeting> getGreetingById(@PathVariable Long id) {
+        return greetingService.getGreetingById(id);
     }
 }
